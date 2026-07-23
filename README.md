@@ -9,3 +9,8 @@ This project is dedicated to experiment on drupal framwework.
     cp xdebug.ini.example xdebug.ini
 
     docker compose up -d
+
+Enter the docker container command line:
+
+    docker exec -itu 1000:1000 lasas bash
+
