@@ -1,0 +1,7 @@
+hello_world.my_page:
+  path: '/mypage/page'
+  defaults:
+    _controller: '\Drupal\hello_world\Controller\ExampleController::myPage'
+    _title: 'Testinis puslapis'
+  requirements:
+    _permission: 'access content'
