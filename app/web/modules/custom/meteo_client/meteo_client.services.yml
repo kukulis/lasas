@@ -1,0 +1,4 @@
+services:
+  meteo_client.client:
+    class: Drupal\meteo_client\Service\MeteoClient
+    arguments: ['@http_client']

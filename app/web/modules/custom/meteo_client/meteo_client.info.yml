@@ -1,0 +1,6 @@
+name: Meteo Client
+description: Consumes a third-party weather API and displays results.
+package: Custom
+
+type: module
+core_version_requirement: ^10.3 || ^11
