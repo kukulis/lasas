@@ -1,0 +1,8 @@
+meteo_client.today:
+  path: '/weather/today/{place}'
+  defaults:
+    _controller: '\Drupal\meteo_client\Controller\WeatherController::today'
+    _title: 'Today''s weather'
+    place: 'vilnius'
+  requirements:
+    _permission: 'access content'
