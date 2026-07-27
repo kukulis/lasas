@@ -8,7 +8,6 @@ use Drupal\meteo_client\Exception\GtNetworkException;
 use Drupal\meteo_client\Exception\GtNotFoundException;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
-use GuzzleHttp\Exception\InvalidArgumentException;
 
 /**
  * Client for meteo.lt api.
@@ -55,10 +54,9 @@ class MeteoClient
             throw new GtNetworkException( "error connecting meteo:". $e->getMessage());
         }
         try {
-            $rezJson = $rez->getBody();
-            $rezData = \GuzzleHttp\json_decode($rezJson);
-            return $rezData;
-        } catch (InvalidArgumentException $e) {
+            $rezJson = (string) $rez->getBody();
+            return json_decode($rezJson, false, 512, JSON_THROW_ON_ERROR);
+        } catch (\JsonException $e) {
             throw new GtNetworkException( "error connecting meteo:". $e->getMessage());
         }
     }
