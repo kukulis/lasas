@@ -6,6 +6,7 @@ use Drupal\Core\Entity\Attribute\ContentEntityType;
 use Drupal\Core\Entity\ContentEntityBase;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Entity\Sql\SqlContentEntityStorage;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 //
@@ -31,7 +32,9 @@ use Drupal\Core\StringTranslation\TranslatableMarkup;
   entity_keys: [
     'id' => 'id',
     'uuid' => 'uuid',
-    'grybas' => 'grybas',
+  ],
+  handlers: [
+    'storage' => SqlContentEntityStorage::class,
   ],
   base_table: 'advertiser',
 )]
