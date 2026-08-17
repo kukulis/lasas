@@ -1,0 +1,43 @@
+<?php
+
+/**
+ * @file
+ * Install, update and schema hooks for the Hello World module.
+ */
+
+/**
+ * Implements hook_schema().
+ *
+ * Defines a plain table (not backed by the Entity API) so migrate_plus's
+ * 'table' destination plugin has somewhere to write rows that isn't the
+ * advertiser entity's base table.
+ */
+function hello_world_schema() {
+  $schema['advertiser_raw'] = [
+    'description' => 'Raw advertiser rows imported via drush migrate:*, outside the Entity API.',
+    'fields' => [
+      'id' => [
+        'type' => 'int',
+        'not null' => TRUE,
+      ],
+      'grybas' => [
+        'type' => 'varchar',
+        'length' => 64,
+        'not null' => TRUE,
+      ],
+    ],
+    'primary key' => ['id'],
+  ];
+  return $schema;
+}
+
+/**
+ * Creates the advertiser_raw table for sites where hello_world was already installed.
+ */
+function hello_world_update_10001() {
+  $schema = \Drupal::database()->schema();
+  if (!$schema->tableExists('advertiser_raw')) {
+    $spec = hello_world_schema()['advertiser_raw'];
+    $schema->createTable('advertiser_raw', $spec);
+  }
+}

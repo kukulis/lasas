@@ -1,0 +1,27 @@
+id: advertiser_import
+label: 'Advertiser import'
+migration_group: hello_world
+migration_tags:
+  - Advertiser
+source:
+  plugin: embedded_data
+  data_rows:
+    - id: 1
+      grybas: 'Baravykas'
+    - id: 2
+      grybas: 'Voveraitė'
+    - id: 3
+      grybas: 'Kazlėkas'
+  ids:
+    id:
+      type: integer
+process:
+  id: id
+  grybas: grybas
+destination:
+  plugin: 'entity:advertiser'
+migration_dependencies: {}
+dependencies:
+  enforced:
+    module:
+      - hello_world
