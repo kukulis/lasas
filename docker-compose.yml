@@ -14,6 +14,7 @@ services:
             - ./:/var/www/html
             - ./shared:/var/shared
             - ./xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+            - ./.docker/app/uploads.ini:/usr/local/etc/php/conf.d/uploads.ini
         environment:
             BASEDIR: /var/www/html
 #            COMPOSER_AUTH: '${COMPOSER_AUTH}'

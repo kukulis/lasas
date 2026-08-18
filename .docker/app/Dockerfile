@@ -4,8 +4,10 @@ WORKDIR /var/www/html
 
 RUN apt-get update
 RUN apt-get -y install less vim git iputils-ping zip libzip-dev libpng-dev libxml2-dev mariadb-client
+RUN apt-get -y install libjpeg62-turbo-dev
 
 RUN #docker-php-ext-install zip gd bcmath exif gd intl opcache pcntl mysqli pdo_mysql
+RUN docker-php-ext-configure gd --with-jpeg
 RUN docker-php-ext-install zip exif intl pcntl mysqli pdo_mysql gd
 
 RUN pecl install xdebug
