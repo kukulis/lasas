@@ -6,3 +6,11 @@ meteo_client.today:
     place: 'vilnius'
   requirements:
     _permission: 'access content'
+
+meteo_client.search:
+  path: '/weather'
+  defaults:
+    _form: '\Drupal\meteo_client\Form\WeatherSearchForm'
+    _title: 'Weather search'
+  requirements:
+    _permission: 'access content'

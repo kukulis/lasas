@@ -5,6 +5,7 @@ namespace Drupal\meteo_client\Controller;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\meteo_client\Exception\GtNetworkException;
 use Drupal\meteo_client\Exception\GtNotFoundException;
+use Drupal\meteo_client\Form\WeatherSearchForm;
 use Drupal\meteo_client\Service\MeteoClient;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -34,18 +35,21 @@ class WeatherController extends ControllerBase
    */
   public function today(string $place = 'vilnius'): array
   {
+    $build['search_form'] = $this->formBuilder()->getForm(WeatherSearchForm::class);
+    $build['#cache'] = ['max-age' => self::CACHE_MAX_AGE];
+
     try {
       $forecast = $this->meteoClient->getForecast($place);
     } catch (GtNotFoundException $e) {
-      return [
+      $build['message'] = [
         '#markup' => $this->t('No weather data found for %place.', ['%place' => $place]),
-        '#cache' => ['max-age' => self::CACHE_MAX_AGE],
       ];
+      return $build;
     } catch (GtNetworkException $e) {
-      return [
+      $build['message'] = [
         '#markup' => $this->t('Unable to fetch weather data: @message', ['@message' => $e->getMessage()]),
-        '#cache' => ['max-age' => self::CACHE_MAX_AGE],
       ];
+      return $build;
     }
 
     $today = gmdate('Y-m-d');
@@ -68,34 +72,33 @@ class WeatherController extends ControllerBase
     $placeName = $forecast->place->name ?? $place;
 
     if (!$rows) {
-      return [
+      $build['message'] = [
         '#markup' => $this->t('No forecast available for today in %place.', ['%place' => $placeName]),
-        '#cache' => ['max-age' => self::CACHE_MAX_AGE],
       ];
+      return $build;
     }
 
-    return [
-      'updated' => [
-        '#markup' => $this->t('Forecast data as of %date UTC.', [
-          '%date' => $forecast->forecastCreationTimeUtc,
-        ]),
-      ],
-      'table' => [
-        '#type' => 'table',
-        '#caption' => $this->t("Today's weather in %place", ['%place' => $placeName]),
-        '#header' => [
-          $this->t('Time (UTC)'),
-          $this->t('Temperature'),
-          $this->t('Wind'),
-          $this->t('Cloud cover'),
-          $this->t('Humidity'),
-          $this->t('Precipitation'),
-          $this->t('Condition'),
-        ],
-        '#rows' => $rows,
-      ],
-      '#cache' => ['max-age' => self::CACHE_MAX_AGE],
+    $build['updated'] = [
+      '#markup' => $this->t('Forecast data as of %date UTC.', [
+        '%date' => $forecast->forecastCreationTimeUtc,
+      ]),
     ];
+    $build['table'] = [
+      '#type' => 'table',
+      '#caption' => $this->t("Today's weather in %place", ['%place' => $placeName]),
+      '#header' => [
+        $this->t('Time (UTC)'),
+        $this->t('Temperature'),
+        $this->t('Wind'),
+        $this->t('Cloud cover'),
+        $this->t('Humidity'),
+        $this->t('Precipitation'),
+        $this->t('Condition'),
+      ],
+      '#rows' => $rows,
+    ];
+
+    return $build;
   }
 
 }
