@@ -24,8 +24,7 @@ class Tasks extends InstallTasks {
   /**
    * Minimum required MariaDB version.
    */
-  const MARIADB_MINIMUM_VERSION = '10.3';
-  # const MARIADB_MINIMUM_VERSION = '10.6';
+  const MARIADB_MINIMUM_VERSION = '10.6';
 
   /**
    * The PDO driver name for MySQL and equivalent databases.
