@@ -35,7 +35,7 @@ class WeatherController extends ControllerBase
    */
   public function today(string $place = 'vilnius'): array
   {
-    $build['search_form'] = $this->formBuilder()->getForm(WeatherSearchForm::class);
+    $build['umbajumba'] = $this->formBuilder()->getForm(WeatherSearchForm::class);
     $build['#cache'] = ['max-age' => self::CACHE_MAX_AGE];
 
     try {
